@@ -86,11 +86,11 @@ Now to host our repo we are going to make a simple addition to the example Docke
 
 Just replace <-github-handle-> and  <-repo-name-> with the details that matche your project.
 
-If you plan to serve a repo you have set to private, you may need to change the syntax of your clone command:
+If you plan to serve a repo you have set to private, you may need to <a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">change the syntax</a>  of your clone command:
 
         git clone https://<handle>:<github-password>@github.com/<handle>/<repo-name>.git
 
-<a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">^src^</a>    
+   
 
 
 As stated in the guide to build a docker image, after you create your Dockerfile, run the build command:
@@ -104,11 +104,12 @@ Once complete, you should be able to run your new docker container which will se
 
 
 And visit it at the Public DNS we used to log in via ssh followed by our configured end-point:
-  <public-dns>/dev_serv
+
+        <public-dns>/dev_serv
 
 
-If you can connect to your intance server via http but not https, you may need to enable inbound connections:
-  https://docs.aws.amazon.com/cloudhsm/latest/userguide/ssl-offload-enable-traffic-and-verify-certificate.html#ssl-offload-add-security-group-linux
+If you can connect to your intance server via http but not https, you may need to <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/ssl-offload-enable-traffic-and-verify-certificate.html#ssl-offload-add-security-group-linux">enable inbound connections</a>.
+  
 
 
 
