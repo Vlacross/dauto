@@ -7,6 +7,8 @@ My intention was to set up a personal live development server so that I can host
 I decided to set up a simple EC2 instance and host an apache server running on an ubuntu platform from a docker container.
 The AWS guides have very thorough step-by-step instructions, which made this quite easy.
 
+<br>
+
     ******************************************************
     This documentation could be incomplete or inaccurate. 
     These are the recorded steps I took in deploying a project server instance. 
@@ -14,6 +16,7 @@ The AWS guides have very thorough step-by-step instructions, which made this qui
     ******************************************************
     These steps were performed on Linux Mint 18.3 Sylvia.
 
+<br>
 
 To recreate, make an account with AWS (I went with the free tier).
 
@@ -24,6 +27,7 @@ Launch an instance (I set up a type t2.micro Amazon Linux 2).
 
 I would recommend making a folder in your projects directory to store a few files locally.**
 
+<br>
 
 After you configure your instance, set up ssh-key-pairs using the key-pair manager:   <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">Here are the AWS docs</a>
   
@@ -85,7 +89,7 @@ If you plan to serve a repo you have set to private, you may need to change the 
 
 
 As stated in the guide to build a docker image, after you create your Dockerfile, run the build command:
-      docker build -t <image-name> .
+        docker build -t <image-name> .
 
 
 Once complete, you should be able to run your new docker container which will serve the specified repo:
