@@ -143,10 +143,11 @@ You should see a short help message. If not, double check the path you entered m
 
 
 Now everytime you update your project and want your live site to reflect the changes, you can use:
+
         dauto <key-pair.pem> <ec2-username>@<public-url>
 
 
 
+I intend to add more as I learn more. This guide is mostly a documentation exercise.
 
-
-
+To Be Continued...
