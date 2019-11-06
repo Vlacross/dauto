@@ -1,4 +1,4 @@
-This repo is intended to hold project sites in their development stage. 
+This repo is intended to hold a personal guide on hoe to host a website on an ec2. 
 
 
 My intention was to set up a personal live development server so that I can host websites before releasing them to production. This would allow me to test the site on multiple devices and observe how the site interacts live.
@@ -21,7 +21,7 @@ The AWS guides have very thorough step-by-step instructions, which made this qui
 To recreate, make an account with AWS (I went with the free tier).
 
 
-Go to your dashboard and find services and select EC2
+Go to your dashboard and find services and select EC2.
 
 Launch an instance (I set up a type t2.micro Amazon Linux 2).
 
@@ -29,27 +29,30 @@ I would recommend making a folder in your projects directory to store a few file
 
 <br>
 
-After you configure your instance, set up ssh-key-pairs using the key-pair manager:   <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">Here are the AWS docs</a>
+After you configure your instance, set up ssh-key-pairs using the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">key-pair manager</a>
   
 
-  Save your key-pair as a *.pem file and change the permissions of the file via:
-    chmod 400  testance.pem
-  You will need to use this file when logging into your ec2 instance.
-  Save this file in the folder you made earlier.
+Save your key-pair as a *.pem file and change the permissions of the file via:
+
+        chmod 400  testance.pem
+
+You will need to use this file when logging into your ec2 instance.
+Save this file in the folder you made earlier.
 
 
-Go to your EC2 dashboard and find your instance details and get its Public DNS (IPv4):    <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-viewing">Examples Here</a>
+Go to your EC2 dashboard and find your instance details and get its <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-viewing">Public DNS (IPv4)</a>
   
 
 
-Open up terminal and log into your instance vis ssh:
-  ssh -i <path-to-your-ssh-file.pem> ec2-user@<public-dns>
+Open up terminal and log into your instance via ssh:
+
+        ssh -i <path-to-your-ssh-file.pem> ec2-user@<public-dns>
 
 
 For Amazon Linux 2 or the Amazon Linux AMI, the user name is `ec2-user`. If you used a different type, it may be different (or you may have configured it already).
 
 
-If you weren't able to connect, you may need to enable inbound traffic or reconfigure your key-pairs. Go through the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connection-prereqs.html#connection-prereqs-get-info-about-instance">prerequisites</a> and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html#AccessingInstancesLinuxSSHClient">ssh</a> guides:
+If you weren't able to connect, you may need to enable inbound traffic or reconfigure your key-pairs. Go through the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connection-prereqs.html#connection-prereqs-get-info-about-instance">prerequisites</a> and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html#AccessingInstancesLinuxSSHClient">ssh</a> guides.
     
 
 
@@ -69,7 +72,7 @@ Now to host our repo we are going to make a simple addition to the example Docke
         apt-get -y install apache2
 
         RUN apt-get -y install git
-        RUN git clone https://github.com/<github-handle>/<repo-name>.git /var/www/html/dev_serv 
+        RUN git clone https://github.com/<-github-handle->/<-repo-name->.git /var/www/html/dev_serv 
 
         RUN echo '. /etc/apache2/envvars' > /root/run_apache.sh && \
         echo 'mkdir -p /var/run/apache2' >> /root/run_apache.sh && \
@@ -81,19 +84,23 @@ Now to host our repo we are going to make a simple addition to the example Docke
 
         CMD /root/run_apache.sh
 
-Just replace <github-handle> and  <repo-name> with the details that matche your project.
+Just replace <-github-handle-> and  <-repo-name-> with the details that matche your project.
 
 If you plan to serve a repo you have set to private, you may need to change the syntax of your clone command:
-  git clone https://<handle>:<github-password>@github.com/<handle>/<repo-name>.git
-    <a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">src</a>    
+
+        git clone https://<handle>:<github-password>@github.com/<handle>/<repo-name>.git
+
+<a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">^src^</a>    
 
 
 As stated in the guide to build a docker image, after you create your Dockerfile, run the build command:
+
         docker build -t <image-name> .
 
 
 Once complete, you should be able to run your new docker container which will serve the specified repo:
-  docker run -t -d -i -p 80:80 <image-name>
+
+        docker run -t -d -i -p 80:80 <image-name>
 
 
 And visit it at the Public DNS we used to log in via ssh followed by our configured end-point:
