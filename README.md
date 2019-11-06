@@ -1,4 +1,4 @@
-This repo is intended to hold a personal guide on hoe to host a website on an ec2. 
+This repo is intended to hold a personal guide on how to host a website on an ec2. 
 
 
 My intention was to set up a personal live development server so that I can host websites before releasing them to production. This would allow me to test the site on multiple devices and observe how the site interacts live.
