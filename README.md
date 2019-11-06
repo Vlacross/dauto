@@ -115,25 +115,35 @@ If you can connect to your intance server via http but not https, you may need t
 
 Great, now we are hosting a simple project site (supposing all the steps have been completed successfully up to this point). However, every time we make a change to our repo, even if we save, commit, and push to github, our docker container is still serving the image we built using the repo as it was when we ran docker build to create the image. So in order to have an updated live site, we need to scrap the old image and rebuild it.
 
-For this, I wrote a Bash script that I called auto. It is not a package, so you will have to create a file called 'auto' in the same directory as the key-pair.pem file, copy the contents, and save it. 
-Make the file executable with:
-  chmod +x auto
+For this, I wrote a Bash script that I called dauto. 
 
-Note: cluttering the bashrc file isn't recommended. There are various other options for setting your $PATH, but I am showing .bashrc for the sake of a simple example.**
+It is not a package, so you will have to create a file called 'dauto' in the same directory as the key-pair.pem file, <a href="./dauto">copy the contents of this file</a>, and save it. 
+
+
+Make the file executable with:
+
+        chmod +x dauto
+<br>
+        Note: cluttering the bashrc file isn't recommended. There are various other options for setting your $PATH, but I am showing .bashrc for the sake of a simple example.**
 
 You can set your PATH variable so that you can use the previous script without specifying it's full path.
-  Supposing the folder you created was named 'dev_serv' and it was in a project folder named 'projects' in your home directory:
-  Add to the bottom of your .bashrc or .profile:
-    export PATH="$HOME/projects/dev_serv:$PATH"
 
-  Then save and exit.
-  Source the file and try it out with:
-    auto --help
-  You should see a short help message. If not, double check the path you entered matches the path to the file we created.
+Supposing the folder you created was named 'dev_serv' and it was in a project folder named 'projects' in your home directory:
+
+Add to the bottom of your .bashrc or .profile:
+
+        export PATH="$HOME/projects/dev_serv:$PATH"
+
+Then save and exit.
+Source the file and try it out with:
+
+        dauto --help
+
+You should see a short help message. If not, double check the path you entered matches the path to the file we created.
 
 
 Now everytime you update your project and want your live site to reflect the changes, you can use:
-  auto <key-pair.pem> <ec2-username>@<public-url>
+        dauto <key-pair.pem> <ec2-username>@<public-url>
 
 
 
