@@ -1,119 +1,60 @@
- <p>
-  This repo is intended to hold project sites in their development stage.
- </p>
+This repo is intended to hold project sites in their development stage. 
 
 
-<p>
-  My intention was to set up a personal live development server so that I can host websites before releasing them to production. This would allow me to test the site on multiple devices and observe how the site interacts live.
-</p>
+My intention was to set up a personal live development server so that I can host websites before releasing them to production. This would allow me to test the site on multiple devices and observe how the site interacts live.
 
 
+I decided to set up a simple EC2 instance and host an apache server running on an ubuntu platform from a docker container.
+The AWS guides have very thorough step-by-step instructions, which made this quite easy.
 
-<p>
-  I decided to set up a simple EC2 instance and host an apache server running on an ubuntu platform from a docker container.
-  The AWS guides have very thorough step-by-step instructions, which made this quite easy.
-</p>
-
-<section>
-  <p>
     ******************************************************
     This documentation could be incomplete or inaccurate. 
     These are the recorded steps I took in deploying a project server instance. 
     The purpose of this is to provide the writer of this guide future reference.
     ******************************************************
     These steps were performed on Linux Mint 18.3 Sylvia.
-  </p>
-</section>
-
-<li id="make-account">
-  <p>
-    To recreate, make an account with AWS (I went with the free tier).
-  </p>
 
 
-  <p>
-    Go to your dashboard and find services and select EC2
-  </p>
+To recreate, make an account with AWS (I went with the free tier).
 
-  <p>
-    Launch an instance (I set up a type t2.micro Amazon Linux 2).
-  </p>
 
-  <p>
-    I would recommend making a folder in your projects directory to store a few files locally.**
-  </p>
-</li>
+Go to your dashboard and find services and select EC2
 
-<li id="configure-instance">
-<section>
-After you configure your instance, set up ssh-key-pairs using the key-pair manager:
-<p>
-</p>
-  <p>
-  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
-  </p>
+Launch an instance (I set up a type t2.micro Amazon Linux 2).
 
-  <p>
+I would recommend making a folder in your projects directory to store a few files locally.**
+
+
+After you configure your instance, set up ssh-key-pairs using the key-pair manager:   <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">Here are the AWS docs</a>
+  
+
   Save your key-pair as a *.pem file and change the permissions of the file via:
-  </p>
-    <p>
     chmod 400  testance.pem
-    </p>
-  <p>
   You will need to use this file when logging into your ec2 instance.
-  </p>
-  <p>
   Save this file in the folder you made earlier.
-  </p>
-</section>
 
 
-<p>
-Go to your EC2 dashboard and find your instance details and get its Public DNS (IPv4)
-</p>
-  <p>
-  https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-viewing
-  </p>
+Go to your EC2 dashboard and find your instance details and get its Public DNS (IPv4):    <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-viewing">Examples Here</a>
+  
 
 
-<p>
 Open up terminal and log into your instance vis ssh:
-</p>
-  <p>
   ssh -i <path-to-your-ssh-file.pem> ec2-user@<public-dns>
-  </p>
 
 
 For Amazon Linux 2 or the Amazon Linux AMI, the user name is `ec2-user`. If you used a different type, it may be different (or you may have configured it already).
-<p>
-</p>
 
 
-<p>
-If you weren't able to connect, you may need to enable inbound traffic or reconfigure your key-pairs. Go through the prerequisites and ssh guides:
-</p>
-  <p>
-  prereq - 
-  </p>
-    <p>
-    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connection-prereqs.html#connection-prereqs-get-info-about-instance
-    </p>
-  <p>
-  connect via ssh -
-  </p>
-    <p>
-    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html#AccessingInstancesLinuxSSHClient
-    </p>
-</li>
+If you weren't able to connect, you may need to enable inbound traffic or reconfigure your key-pairs. Go through the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connection-prereqs.html#connection-prereqs-get-info-about-instance">prerequisites</a> and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html#AccessingInstancesLinuxSSHClient">ssh</a> guides:
+    
 
 
-<li>
-Install Docker on your instance the AWS way (it proved to be a bit tricky to do it manually):
-  https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker
+<a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker">Install Docker</a> on your instance the AWS way (it proved to be a bit tricky to do it manually):
+  
 
 
-Create a Docker file:
-  https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#docker-basics-create-image
+<a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#docker-basics-create-image">Create a Docker file</a>
+  
 
 Now to host our repo we are going to make a simple addition to the example Dockerfile and it should look something like this:
 
@@ -140,11 +81,11 @@ Just replace <github-handle> and  <repo-name> with the details that matche your 
 
 If you plan to serve a repo you have set to private, you may need to change the syntax of your clone command:
   git clone https://<handle>:<github-password>@github.com/<handle>/<repo-name>.git
-    src:    https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616
+    <a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">src</a>    
 
 
 As stated in the guide to build a docker image, after you create your Dockerfile, run the build command:
-  docker build -t <image-name> .
+      docker build -t <image-name> .
 
 
 Once complete, you should be able to run your new docker container which will serve the specified repo:
@@ -158,7 +99,7 @@ And visit it at the Public DNS we used to log in via ssh followed by our configu
 If you can connect to your intance server via http but not https, you may need to enable inbound connections:
   https://docs.aws.amazon.com/cloudhsm/latest/userguide/ssl-offload-enable-traffic-and-verify-certificate.html#ssl-offload-add-security-group-linux
 
-</li>
+
 
 Great, now we are hosting a simple project site (supposing all the steps have been completed successfully up to this point). However, every time we make a change to our repo, even if we save, commit, and push to github, our docker container is still serving the image we built using the repo as it was when we ran docker build to create the image. So in order to have an updated live site, we need to scrap the old image and rebuild it.
 
