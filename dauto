@@ -1,0 +1,88 @@
+#!/bin/bash
+
+#this checks for argument cases, in our case, it only catches th --help flag
+while test $# -gt 0; do
+  case "$1" in
+    -h| --help)
+      echo "Dauto - a simple script to ease the process of rebuilding your ec2 hosted dockerfile."
+      echo " "
+      echo "dauto [options]"
+      echo "dauto <key-pair> <ec2-username>@<public_dns>"
+      echo " "
+      echo "options:"
+      echo "-h, --help          show brief help message"
+      exit 0
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+#this ensures that we receive an argument
+if [ $# -eq 0 ]; then
+  echo "Not enough arguments."
+  echo "For help, try --help"
+  exit 1
+fi
+
+#this calls the ssh command with the credentials we've supplied and executes a script
+# + to stop and remove the old image/container and rebuild and restart with updated data.
+ssh -i $1 $2 << EOF
+
+imageID=\$(docker images | awk '{if (\$1 == "worldly") {print \$3} }')
+containerID=\$(docker container ls | awk '{if (\$2 == "worldly") {print \$1} }')
+
+
+echo "starting image rebuild process";
+if [ \${#containerID} -ne 0 ]; then
+
+        echo "stopping container"
+        docker stop \$containerID;
+
+        if [ \$? -ne 0 ]; then
+                echo "There was a problem stopping the container"
+                docker kill \$containerID;
+
+                if [ \$? -ne 0 ]; then
+                        echo "Could not kill container."
+                        break;
+                fi
+        fi
+
+        echo "cleaning containers"
+        docker rm \$(docker ps -q --filter status=exited)
+
+        if [ \$? -ne 0 ]; then
+                echo "Error cleaning container history.";
+                break;
+        fi
+else 
+        echo "scoatty"
+fi
+
+if [ \${#imageID} -ne 0 ]; then
+        echo "destroying old image"
+        docker rmi \$imageID --force
+
+        if [ \$? -ne 0 ]; then
+                echo "There was a problem destroying old image.";
+                break;
+        fi
+fi
+
+echo "rebuilding image"
+docker build --no-cache -t worldly .
+
+if [ \$? -ne 0 ]; then
+        echo "Error during image rebuild."
+        break;
+fi
+
+echo "starting image"
+docker run -t -d -i -p 80:80 worldly
+
+
+
+exit
+EOF
