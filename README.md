@@ -84,7 +84,7 @@ Now to host our repo we are going to make a simple addition to the example Docke
 
         CMD /root/run_apache.sh
 
-Just replace <-github-handle-> and  <-repo-name-> with the details that matche your project.
+Just replace <-github-handle-> and  <-repo-name-> with the details that match your project.
 
 If you plan to serve a repo you have set to private, you may need to <a href="https://github.community/t5/How-to-use-Git-and-GitHub/Clone-private-repo/td-p/12616">change the syntax</a>  of your clone command:
 
